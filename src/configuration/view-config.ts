@@ -78,6 +78,11 @@ export const viewsConfig = {
         geo: {},
       },
     },
+    overview: {
+      export: {},
+      refineFilter: {
+      },
+    },
   },
   contributors: {
     export: {},

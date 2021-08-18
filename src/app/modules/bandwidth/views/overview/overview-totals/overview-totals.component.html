@@ -1,0 +1,58 @@
+<div data-aid="report-overview-usage-totals" class="kReport kOverrideFAIcons">
+  <div class="kFilters">
+    <span class="kTitle">{{selectedDateRange?.isCurrent ? selectedDateRange.prefix : selectedDateRange?.label}}</span>
+  </div>
+
+  <k-area-blocker [message]="blockerMessage" [showLoader]="isBusy">
+
+    <div class="kReportContent">
+      <div class="overview-total-metrics">
+        <div class="overview-total-metric">
+          <span class="metric-value">100.7</span>
+          <span class="metric-unit">GB</span>
+          <span class="metric-label">Stored Media</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">45,885</span>
+          <span class="metric-label">Managed Entries</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">13,556</span>
+          <span class="metric-label">Active Unique Users</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">236</span>
+          <span class="metric-label">Enrichment Jobs Credit Spent</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">45,885</span>
+          <span class="metric-unit">GB</span>
+          <span class="metric-label">Outbound Bandwidth</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">56</span>
+          <span class="metric-label">Interactive Videos</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">45,845</span>
+          <span class="metric-label">Live Viewing Hours</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">236</span>
+          <span class="metric-label">Enrichment Jobs Credit</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">10,556</span>
+          <span class="metric-unit">GB</span>
+          <span class="metric-label">Transcoded Media</span>
+        </div>
+        <div class="overview-total-metric">
+          <span class="metric-value">45,885</span>
+          <span class="metric-label">Delivered Video Streams</span>
+        </div>
+      </div>
+    </div>
+
+  </k-area-blocker>
+</div>
+

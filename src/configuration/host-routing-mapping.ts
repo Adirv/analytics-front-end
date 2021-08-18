@@ -23,6 +23,9 @@ export function mapRoutes(kmcRoute: string, queryParams: { [key: string]: string
       analyticsRoute = '/audience/engagement';
       break;
     case 'publisher':
+    case '/analytics/overview':
+      analyticsRoute = '/bandwidth/overview';
+      break;
     case '/analytics/publisher':
       analyticsRoute = '/bandwidth/publisher';
       break;

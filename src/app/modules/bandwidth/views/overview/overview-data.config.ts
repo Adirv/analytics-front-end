@@ -7,7 +7,7 @@ import { ReportHelper } from 'shared/services';
 import { fileSize } from 'shared/utils/file-size';
 
 @Injectable()
-export class PublisherStorageDataConfig extends ReportDataBaseConfig {
+export class OverviewDataConfig extends ReportDataBaseConfig {
   constructor(_translate: TranslateService) {
     super(_translate);
   }
@@ -24,13 +24,11 @@ export class PublisherStorageDataConfig extends ReportDataBaseConfig {
           },
           'bandwidth_consumption': {
             format: value => value,
-            colors: ['#31bea6'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           },
           'average_storage': {
             format: value => value,
-            colors: ['#30f'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           },

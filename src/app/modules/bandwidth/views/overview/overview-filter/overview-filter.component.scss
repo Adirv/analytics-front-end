@@ -1,0 +1,84 @@
+@import '../../../../../../styles/variables';
+
+:host {
+  margin-right: 16px;
+}
+
+.kDateFilter{
+  display: flex;
+  align-items: center;
+  .datesRangeDropDown{
+    background-color: white;
+    height: 34px;
+    border: 1px solid $kGrayscale4;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+    cursor: pointer;
+    &:hover{
+      border-color: $kPrimary;
+    }
+    &:active{
+      box-shadow: 0 0 0 3px rgba(0,167,132,0.4);
+    }
+    span{
+      font-size: 15px;
+      white-space: nowrap;
+      margin-right: 12px;
+    }
+    i{
+      margin-left: auto;
+      font-size: 12px;
+      color: $kGrayscale3;
+    }
+    .compareIcon{
+      font-size: 24px;
+      color: $kOrange;
+    }
+  }
+}
+.kDateFilterPopup{
+  height: 100%;
+  border: 1px solid $kGrayscale5;
+  border-radius: 4px;
+  .kFilters{
+    padding: 20px 0 0 20px;
+  }
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid $kGrayscale4;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding: 0;
+  }
+}
+
+:host ::ng-deep {
+  .ui-state-focus {
+    outline: 5px auto rgba(0, 150, 255, 1) !important;
+  }
+}
+.kDateFilterPopup ::ng-deep .ui-button{
+  height: auto;
+  min-height: 34px;
+  .ui-button-text {
+    line-height: 16px;
+  }
+}
+
+.kRefineFiltersFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 66px;
+  padding: 0 24px;
+  margin-top: 8px;
+  button {
+    width: 100px;
+  }
+}

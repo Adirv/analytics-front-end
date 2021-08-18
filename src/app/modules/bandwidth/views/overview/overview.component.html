@@ -1,0 +1,30 @@
+<div data-aid="report-storage" class="kReport kContent kOverrideFAIcons">
+  <div class="kReportHeader">
+    <span class="kTitle">{{'app.bandwidth.overviewStorage' | translate}}</span>
+    <app-export-csv *ngIf="overviewViewConfig.export"
+                    name="Overview"
+                    [reports]="exportConfig"
+                    [dateFilter]="dateFilter"></app-export-csv>
+    <app-overview-filter name="overview"
+                         [locationFiltersWarning]="'app.bandwidth.locationFiltersWarning' | translate"
+                         [viewConfig]="overviewViewConfig.refineFilter"
+                         [showAutocompleteGroup]="false"
+                         [opened]="refineFilterOpened"
+                         [dateFilter]="dateFilter"
+                         (closeFilters)="refineFilterOpened = false"
+                         (filterChange)="onRefineFilterChange($event)"></app-overview-filter>
+    <app-overview-date-filter name="overview"
+                              [availableDateRange]="availableDateRange"
+                              (filterChange)="onDateFilterChange($event)"></app-overview-date-filter>
+  </div>
+
+  <div class="kReportContainer">
+    <app-overview-totals [selectedDateRange]="dateRange"></app-overview-totals>
+  </div>
+
+  <div class="kReportContainer">
+    <app-overview-graph></app-overview-graph>
+  </div>
+
+</div>
+

@@ -1,0 +1,31 @@
+<div class="kDateFilter kOverrideFAIcons">
+
+  <div #datesBtn class="datesRangeDropDown"
+       tabindex="0" role="button" aria-label="Date filter"
+       (keydown.enter)="datesPopup.toggle()">
+    <span>{{'app.filters.filter' | translate}}</span>
+    <i class="kIcondropdown_arrow_bottom"></i>
+  </div>
+</div>
+
+
+<kPopupWidget #datesPopup [attr.data-aid]="'date-filter-overview'"
+              [popupWidth]="560" [closeBtn]="false" [targetRef]="datesBtn" [targetOffset]="{'x':0, 'y': 42}"
+>
+  <ng-template>
+    <div class="kDateFilterPopup kOverrideFAIcons">
+      <div class="kFilters">
+        <app-owners-filter [selectedFilters]="_selectedValues['users']"
+                           [label]="'app.filters.users' | translate"
+                           (itemSelected)="_onItemSelected($event, 'users')"
+                           (itemUnselected)="_onItemUnselected($event, 'users')"></app-owners-filter>
+      </div>
+      <hr>
+      <div class="kRefineFiltersFooter">
+        <button type="button" class="kButtonBranded" pButton
+                [label]="'app.common.apply' | translate"
+                (click)="_apply()"></button>
+      </div>
+    </div>
+  </ng-template>
+</kPopupWidget>

@@ -153,6 +153,7 @@
       "to": "To",
       "preset": "Preset",
       "specific": "Specific Date Range",
+      "specificLabel": "Specific",
       "last": "Last",
       "since": "since",
       "current": "Current",
@@ -184,7 +185,9 @@
       "compare": "Compare with another period",
       "comparelastyear": "Same period last year",
       "comparespecific": "Same period starting at:",
-      "exit": "Exit Compare Mode"
+      "exit": "Exit Compare Mode",
+      "byMonth": "By Month",
+      "byYear": "By Year"
     },
     "usersFilter": {
       "prompt": "Search Users",
@@ -236,6 +239,7 @@
       "title": "Publisher Bandwidth & Storage Report",
       "month_id": "Month",
       "date_id": "Date",
+      "overviewStorage": "Usage",
       "publisherStorage": "Publishers Bandwidth & Storage",
       "usersStorage": "End User Storage",
       "bandwidth_consumption": "Bandwidth Consumption",
@@ -305,7 +309,8 @@
       "objectId": "Object Id",
       "exportLabels": {
         "endUser": "End user",
-        "publisher": "Publisher Bandwidth"
+        "publisher": "Publisher Bandwidth",
+        "overview": "Bandwidth Overview"
       }
     },
     "audience": {
