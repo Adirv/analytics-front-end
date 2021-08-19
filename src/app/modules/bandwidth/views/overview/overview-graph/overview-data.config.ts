@@ -1,0 +1,96 @@
+import { DateFilterUtils } from 'shared/components/date-filter/date-filter-utils';
+import { analyticsConfig } from 'configuration/analytics-config';
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { ReportDataConfig, ReportDataSection, ReportDataBaseConfig } from 'shared/services/storage-data-base.config';
+import { ReportHelper } from 'shared/services';
+import { fileSize } from 'shared/utils/file-size';
+
+@Injectable()
+export class OverviewDataConfig extends ReportDataBaseConfig {
+  constructor(_translate: TranslateService) {
+    super(_translate);
+  }
+
+  public getConfig(): ReportDataConfig {
+    return {
+      [ReportDataSection.graph]: {
+        fields: {
+          'bandwidth_consumption': {
+            format: value => value,
+            colors: ['#3567CA'],
+            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
+            units: value => 'GB',
+          },
+          'average_storage': {
+            format: value => value,
+            colors: ['#E0313A'],
+            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
+            units: value => 'GB',
+          },
+          'peak_storage': {
+            format: value => value,
+            colors: ['#9B64E6'],
+            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
+            units: value => 'GB',
+          },
+          'added_storage': {
+            format: value => value,
+            colors: ['#31BEA6'],
+            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
+            units: value => 'GB',
+          },
+          'deleted_storage': {
+            format: value => value,
+            colors: ['#E1962E'],
+            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
+            units: value => 'GB',
+          }
+        }
+      },
+      [ReportDataSection.totals]: {
+        preSelected: 'bandwidth_consumption',
+        fields: {
+          'bandwidth_consumption': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.bandwidth_consumption`),
+            units: value => fileSize(value).units,
+          },
+          'average_storage': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.average_storage`),
+            tooltip: this._translate.instant(`app.bandwidth.average_storage_tt`),
+            units: value => fileSize(value).units,
+          },
+          'peak_storage': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.peak_storage`),
+            tooltip: this._translate.instant(`app.bandwidth.peak_storage_tt`),
+            units: value => fileSize(value).units,
+          },
+          'added_storage': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.added_storage`),
+            units: value => fileSize(value).units,
+          },
+          'deleted_storage': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.deleted_storage`),
+            units: value => fileSize(value).units,
+          },
+          'combined_bandwidth_storage': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.combined_bandwidth_storage`),
+            tooltip: this._translate.instant(`app.bandwidth.combined_bandwidth_storage_tt`),
+            units: value => fileSize(value).units,
+          },
+          'transcoding_consumption': {
+            format: value => ReportHelper.numberOrZero(fileSize(value).value, false),
+            title: this._translate.instant(`app.bandwidth.transcoding_consumption`),
+            units: value => fileSize(value).units,
+          },
+        }
+      }
+    };
+  }
+}

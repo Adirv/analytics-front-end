@@ -16,13 +16,14 @@ import {DateFilterUtils} from "shared/components/date-filter/date-filter-utils";
 import {SelectItem} from "primeng/api";
 import {EntryLiveUsersMode} from "configuration/analytics-config";
 import {TranslateService} from "@ngx-translate/core";
+import {OverviewDataConfig} from "./overview-data.config";
 
 @Component({
   selector: 'app-overview-graph',
   templateUrl: './overview-graph.component.html',
   styleUrls: ['./overview-graph.component.scss'],
   providers: [
-    PublisherStorageDataConfig,
+    OverviewDataConfig,
   ]
 })
 export class OverviewGraphComponent implements OnInit {
@@ -45,7 +46,6 @@ export class OverviewGraphComponent implements OnInit {
   private _order = '-month_id';
 
   public _mainMetricsOptions: SelectItem[] = [];
-  @Input() colorsMap: { [metric: string]: string } = {};
   public _selectedMain: string;
 
   public _fields: ReportDataFields;
@@ -53,7 +53,7 @@ export class OverviewGraphComponent implements OnInit {
   public _metrics: string[];
   public _colorsMap: { [metric: string]: string } = {};
 
-  constructor(private _dataConfigService: PublisherStorageDataConfig,
+  constructor(private _dataConfigService: OverviewDataConfig,
               private _errorsManager: ErrorsManagerService,
               private _reportService: ReportService,
               private _translate: TranslateService) {

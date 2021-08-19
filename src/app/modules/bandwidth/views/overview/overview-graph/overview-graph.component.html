@@ -4,10 +4,10 @@
       <span class="kTitle">Usage in 12 months preceding August 2021</span>
     </div>
 
-    <app-metrics-selector-dropdown [options]="_mainMetricsOptions"
-                                   [colorsMap]="colorsMap"
+    <app-overview-metrics-selector-dropdown [options]="_mainMetricsOptions"
+                                   [colorsMap]="_colorsMap"
                                    (change)="_onChange()"
-                                   [(selection)]="_selectedMain"></app-metrics-selector-dropdown>
+                                   [(selection)]="_selectedMain"></app-overview-metrics-selector-dropdown>
 
     <k-area-blocker [message]="blockerMessage" [showLoader]="isBusy">
 

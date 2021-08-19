@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/api';
 import { getPrimaryColor } from 'shared/utils/colors';
 
 @Component({
-  selector: 'app-metrics-selector-dropdown',
+  selector: 'app-overview-metrics-selector-dropdown',
   templateUrl: './overview-metrics-selector-dropdown.component.html',
   styleUrls: ['./overview-metrics-selector-dropdown.component.scss']
 })
@@ -18,6 +18,7 @@ export class OverviewMetricsSelectorDropdownComponent {
   public _defaultColor = getPrimaryColor();
 
   public _onChange(): void {
+    debugger;
     this.selectionChange.emit(this.selection);
     this.change.emit(this.selection);
   }
