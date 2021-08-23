@@ -3,6 +3,7 @@ import {OverviewDateRange} from "./overview-date-range.type";
 import {DateFilterUtils} from "shared/components/date-filter/date-filter-utils";
 import {analyticsConfig} from "configuration/analytics-config";
 import {TranslateService} from "@ngx-translate/core";
+import {KalturaReportInterval} from "kaltura-ngx-client";
 
 @Component({
   selector: 'app-overview-date-filter',
@@ -65,7 +66,7 @@ function getMonths(dateRange: AvailabilityDateRange, monthNames: string[], curre
       const label = monthNames[month] + ' ' + i;
       const isCurrent = currentDate.getFullYear() && currentDate.getMonth() === month;
       const prefix = isCurrent ? currentMonthLabel : specificLabel;
-      dates.push({label, prefix, isCurrent, value: new Date(i, month)});
+      dates.push({label, prefix, isCurrent, value: new Date(i, month), interval: KalturaReportInterval.months});
     }
   }
   return dates;
@@ -81,7 +82,7 @@ function getYears(dateRange: AvailabilityDateRange, currentYearLabel: string, sp
     const label = i.toString();
     const isCurrent = i === currentDate.getFullYear();
     const prefix = isCurrent ? currentYearLabel : specificLabel;
-    dates.push({label, prefix, isCurrent, value: new Date(i, 0)});
+    dates.push({label, prefix, isCurrent, value: new Date(i, 0), interval: KalturaReportInterval.months}); // TODO: needs to have years interval
   }
   return dates;
 }

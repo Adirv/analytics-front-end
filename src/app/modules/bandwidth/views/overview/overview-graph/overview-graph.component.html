@@ -1,7 +1,7 @@
 <div data-aid="report-overview" class="kReport kContent kOverrideFAIcons">
   <div class="kReportView">
     <div class="kFilters">
-      <span class="kTitle">Usage in 12 months preceding August 2021</span>
+      <span class="kTitle">Usage in 12 months preceding {{dateRange?.label}}</span>
     </div>
 
     <app-overview-metrics-selector-dropdown [options]="_mainMetricsOptions"
@@ -17,7 +17,7 @@
                *ngIf="barChartData && barChartData[selectedMetrics] && barChartData[selectedMetrics].series && barChartData[selectedMetrics].series[0]?.data?.length"
                [options]="barChartData[selectedMetrics]"></div>
           <div
-            *ngIf="!isBusy && (!barChartData || !barChartData[selectedMetrics] || !barChartData[selectedMetrics]?.series[0]?.data?.length)"
+            *ngIf="!isBusy && (!barChartData || !barChartData[selectedMetrics] || !barChartData[selectedMetrics]?.series || !barChartData[selectedMetrics].series[0]?.data?.length)"
             class="kNoResults">
             <span>{{'app.common.noResults' | translate}}</span>
           </div>

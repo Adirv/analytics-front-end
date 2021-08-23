@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AreaBlockerMessage} from "@kaltura-ng/kaltura-ui";
 import { EChartOption } from 'echarts';
 import {getChartConfig} from "./overview-chart.config";
@@ -18,6 +18,8 @@ import {analyticsConfig, EntryLiveUsersMode} from "configuration/analytics-confi
 import {TranslateService} from "@ngx-translate/core";
 import {FrameEventManagerService, FrameEvents} from "shared/modules/frame-event-manager/frame-event-manager.service";
 import {OverviewDataConfig} from "../overview-data.config";
+import {OverviewDateRange} from "../overview-date-filter/overview-date-range.type";
+import {DateChangeEvent} from "shared/components/date-filter/date-filter.service";
 
 @Component({
   selector: 'app-overview-graph',
@@ -28,7 +30,10 @@ import {OverviewDataConfig} from "../overview-data.config";
     OverviewDataConfig,
   ]
 })
-export class OverviewGraphComponent implements OnInit {
+export class OverviewGraphComponent implements OnChanges {
+  @Input() dateRange: OverviewDateRange;
+  @Input() filter: KalturaReportInputFilter;
+
   private _dataConfig: ReportDataConfig;
 
   public isBusy: boolean;
@@ -38,14 +43,6 @@ export class OverviewGraphComponent implements OnInit {
   public tableData: TableRow<string>[] = [];
   public reportType: KalturaReportType = reportTypeMap(KalturaReportType.partnerUsage);
   public chartDataLoaded = false;
-  public reportInterval: KalturaReportInterval = KalturaReportInterval.months;
-  public filter: KalturaReportInputFilter = new KalturaReportInputFilter(
-    {
-      searchInTags: true,
-      searchInAdminTags: false
-    }
-  );
-  private _order = '-month_id';
 
   public _mainMetricsOptions: SelectItem[] = [];
   public _selectedMain: string;
@@ -60,6 +57,7 @@ export class OverviewGraphComponent implements OnInit {
   public _pageSize = analyticsConfig.defaultPageSize;
   public _tableData: TableRow<string>[] = [];
   public _totalCount: number;
+  private _order = '-month_id';
 
   constructor(private _dataConfigService: OverviewDataConfig,
               private _errorsManager: ErrorsManagerService,
@@ -77,18 +75,20 @@ export class OverviewGraphComponent implements OnInit {
     this._mainMetricsOptions = this._getOptions(this._metrics);
   }
 
+  public ngOnChanges(changes: SimpleChanges) {
+    if (changes['dateRange'].currentValue && this.filter.fromDate) {
+      this._logger.debug('Update filter', () => this.filter);
+      this._order = this.filter.interval === KalturaReportInterval.days ? '-date_id' : '-month_id';
+
+      this.loadReport();
+    }
+  }
+
   private _getOptions(metrics: string[]): SelectItem[] {
     return metrics.map(metric => ({
       label: this._translate.instant(`app.bandwidth.publisher_table.${metric}`),
       value: metric,
     }));
-  }
-
-  ngOnInit(): void {
-    this.filter.fromDate = DateFilterUtils.toServerDate(new Date(2020, 7, 18), true);
-    this.filter.toDate = DateFilterUtils.toServerDate(new Date(), false);
-    this.filter.interval = this.reportInterval;
-    this.loadReport();
   }
 
   private loadReport(sections = this._dataConfig): void {
@@ -127,7 +127,7 @@ export class OverviewGraphComponent implements OnInit {
     const { columns, tableData, totalCount } = this._reportService.tableFromGraph(
       graphs,
       this._dataConfig.table,
-      this.reportInterval,
+      this.filter.interval,
     );
     this._totalCount = totalCount;
     this._columns = columns;
@@ -139,7 +139,7 @@ export class OverviewGraphComponent implements OnInit {
       graphs,
       this._dataConfig.graph,
       { from: this.filter.fromDate, to: this.filter.toDate },
-      this.reportInterval,
+      this.filter.interval,
       () => this.chartDataLoaded = true
     );
     this.barChartData = barChartData;
