@@ -7,22 +7,24 @@ import {ErrorsManagerService, ReportConfig, ReportService} from "shared/services
 import {map, switchMap} from "rxjs/operators";
 import {of as ObservableOf} from "rxjs";
 import {PublisherStorageDataConfig} from "../../publisher-storage/publisher-storage-data.config";
-import {TableRow} from "shared/utils/table-local-sort-handler";
+import {tableLocalSortHandler, TableRow} from "shared/utils/table-local-sort-handler";
 import {KalturaReportGraph, KalturaReportInputFilter, KalturaReportInterval, KalturaReportTotal, KalturaReportType} from "kaltura-ngx-client";
 import {reportTypeMap} from "shared/utils/report-type-map";
 import {PublisherExportConfig} from "../../publisher-storage/publisher-export.config";
 import {KalturaLogger} from "@kaltura-ng/kaltura-logger";
 import {DateFilterUtils} from "shared/components/date-filter/date-filter-utils";
-import {SelectItem} from "primeng/api";
-import {EntryLiveUsersMode} from "configuration/analytics-config";
+import {SelectItem, SortEvent} from "primeng/api";
+import {analyticsConfig, EntryLiveUsersMode} from "configuration/analytics-config";
 import {TranslateService} from "@ngx-translate/core";
-import {OverviewDataConfig} from "./overview-data.config";
+import {FrameEventManagerService, FrameEvents} from "shared/modules/frame-event-manager/frame-event-manager.service";
+import {OverviewDataConfig} from "../overview-data.config";
 
 @Component({
   selector: 'app-overview-graph',
   templateUrl: './overview-graph.component.html',
   styleUrls: ['./overview-graph.component.scss'],
   providers: [
+    KalturaLogger.createLogger('OverviewGraphComponent'),
     OverviewDataConfig,
   ]
 })
@@ -53,10 +55,18 @@ export class OverviewGraphComponent implements OnInit {
   public _metrics: string[];
   public _colorsMap: { [metric: string]: string } = {};
 
+  public _showTable = false;
+  public _columns: string[] = [];
+  public _pageSize = analyticsConfig.defaultPageSize;
+  public _tableData: TableRow<string>[] = [];
+  public _totalCount: number;
+
   constructor(private _dataConfigService: OverviewDataConfig,
               private _errorsManager: ErrorsManagerService,
               private _reportService: ReportService,
-              private _translate: TranslateService) {
+              private _translate: TranslateService,
+              private _logger: KalturaLogger,
+              private _frameEventManager: FrameEventManagerService) {
     this._dataConfig = _dataConfigService.getConfig();
     this.selectedMetrics = this._dataConfig.totals.preSelected;
 
@@ -65,12 +75,11 @@ export class OverviewGraphComponent implements OnInit {
 
     this._metrics = Object.keys(this._fields);
     this._mainMetricsOptions = this._getOptions(this._metrics);
-    this._mainMetricsOptions.unshift(...this._getOptions(['none']));
   }
 
   private _getOptions(metrics: string[]): SelectItem[] {
     return metrics.map(metric => ({
-      label: this._translate.instant(`app.entryLive.discovery.${metric}`),
+      label: this._translate.instant(`app.bandwidth.publisher_table.${metric}`),
       value: metric,
     }));
   }
@@ -96,7 +105,7 @@ export class OverviewGraphComponent implements OnInit {
             if (report.graphs.length) {
               this.chartDataLoaded = false;
               this.handleGraphs(report.graphs); // handle graphs
-              // this._handleTable(report.graphs);
+              this._handleTable(report.graphs);
             }
           this.isBusy = false;
         },
@@ -114,16 +123,16 @@ export class OverviewGraphComponent implements OnInit {
         });
   }
 
-  // private _handleTable(graphs: KalturaReportGraph[]): void {
-  //   const { columns, tableData, totalCount } = this._reportService.tableFromGraph(
-  //     graphs,
-  //     this._dataConfig.table,
-  //     this.reportInterval,
-  //   );
-  //   this._totalCount = totalCount;
-  //   this._columns = columns;
-  //   this._tableData = tableData;
-  // }
+  private _handleTable(graphs: KalturaReportGraph[]): void {
+    const { columns, tableData, totalCount } = this._reportService.tableFromGraph(
+      graphs,
+      this._dataConfig.table,
+      this.reportInterval,
+    );
+    this._totalCount = totalCount;
+    this._columns = columns;
+    this._tableData = tableData;
+  }
 
   private handleGraphs(graphs: KalturaReportGraph[]): void {
     const { barChartData } = this._reportService.parseGraphs(
@@ -143,6 +152,23 @@ export class OverviewGraphComponent implements OnInit {
     //   selected: [this._selectedMain, this._selectedSecondary],
     //   initialRun: initial,
     // });
+  }
+
+  public toggleTable(): void {
+    this._logger.trace('Handle toggle table visibility action by user', { tableVisible: !this._showTable });
+    this._showTable = !this._showTable;
+    if (analyticsConfig.isHosted) {
+      setTimeout(() => {
+        const height = document.getElementById('analyticsApp').getBoundingClientRect().height;
+        this._logger.trace('Send update layout event to the host app', { height });
+        this._frameEventManager.publish(FrameEvents.UpdateLayout, { height });
+      }, 0);
+    }
+  }
+
+  public _onSortChanged(event: SortEvent): void {
+    this._logger.trace('Handle local sort changed action by user', { field: event.field, order: event.order });
+    this._order = tableLocalSortHandler(event, this._order);
   }
 
 }

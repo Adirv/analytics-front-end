@@ -16,44 +16,33 @@ export class OverviewDataConfig extends ReportDataBaseConfig {
     return {
       [ReportDataSection.graph]: {
         fields: {
-          'month_id': {
-            format: value => value
-          },
-          'date_id': {
-            format: value => value
-          },
           'bandwidth_consumption': {
             format: value => value,
+            colors: ['#3567CA'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           },
           'average_storage': {
             format: value => value,
+            colors: ['#E0313A'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           },
           'peak_storage': {
             format: value => value,
+            colors: ['#9B64E6'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           },
           'added_storage': {
             format: value => value,
+            colors: ['#31BEA6'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           },
           'deleted_storage': {
             format: value => value,
-            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
-            units: value => 'GB',
-          },
-          'combined_bandwidth_storage': {
-            format: value => value,
-            graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
-            units: value => 'GB',
-          },
-          'transcoding_consumption': {
-            format: value => value,
+            colors: ['#E1962E'],
             graphTooltip: (value) => value > 1024 ? `<span class="kValue">${ReportHelper.numberOrZero(String(value / 1024), false)}</span>&nbsp;GB` : `<span class="kValue">${ReportHelper.numberOrZero(String(value), false)}</span>&nbsp;MB`,
             units: value => 'GB',
           }
